@@ -8,6 +8,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class LemonWebViewMod {
         modEventBus.addListener(this::registerKeyMappings);
         
         NeoForge.EVENT_BUS.addListener(this::clientTick);
+        NeoForge.EVENT_BUS.addListener(this::registerCommands);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -32,6 +34,11 @@ public class LemonWebViewMod {
     }
 
     private void registerKeyMappings(final RegisterKeyMappingsEvent event) {
+    }
+
+    private void registerCommands(RegisterCommandsEvent event) {
+        WebViewCommand.register(event.getDispatcher());
+        LOGGER.info("WebView commands registered");
     }
 
     private void clientTick(TickEvent.ClientTickEvent event) {
