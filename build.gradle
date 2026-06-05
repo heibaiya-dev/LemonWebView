@@ -25,9 +25,9 @@ repositories {
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
     
-    implementation "org.openjfx:javafx-web:${javafx_version}"
-    implementation "org.openjfx:javafx-controls:${javafx_version}"
-    implementation "org.openjfx:javafx-swing:${javafx_version}"
+    implementation "org.openjfx:javafx-web:${javafx_version}:win"
+    implementation "org.openjfx:javafx-controls:${javafx_version}:win"
+    implementation "org.openjfx:javafx-swing:${javafx_version}:win"
 }
 
 processResources {
