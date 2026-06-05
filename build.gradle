@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'net.neoforged.moddev' version '2.0.141'
     id 'maven-publish'
 }
 
@@ -9,12 +9,22 @@ group = project.mod_packagename
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(java_version as int)
 
-runs {
-    client {
-        workingDirectory project.file('run')
+neoForge {
+    version = neoforge_version
+    
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
     }
-    server {
-        workingDirectory project.file('run/server')
+    
+    mods {
+        lemonwebview {
+            sourceSet sourceSets.main
+        }
     }
 }
 
@@ -23,8 +33,6 @@ repositories {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neoforge_version}"
-    
     implementation "org.openjfx:javafx-web:${javafx_version}:win"
     implementation "org.openjfx:javafx-controls:${javafx_version}:win"
     implementation "org.openjfx:javafx-swing:${javafx_version}:win"
