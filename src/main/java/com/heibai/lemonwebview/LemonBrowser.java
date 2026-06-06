@@ -312,10 +312,10 @@ public class LemonBrowser {
                     
                     for (int i = 0; i < pixels.length; i++) {
                         int pixel = pixels[i];
-                        buffer.put((pixel >> 16) & 0xFF);
-                        buffer.put((pixel >> 8) & 0xFF);
-                        buffer.put(pixel & 0xFF);
-                        buffer.put((pixel >> 24) & 0xFF);
+                        buffer.put((byte)((pixel >> 16) & 0xFF));
+                        buffer.put((byte)((pixel >> 8) & 0xFF));
+                        buffer.put((byte)(pixel & 0xFF));
+                        buffer.put((byte)((pixel >> 24) & 0xFF));
                     }
                     buffer.flip();
                     

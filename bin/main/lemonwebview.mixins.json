@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.heibai.lemonwebview.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "lemonwebview.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "WebViewInitMixin",
+    "WebViewRenderUpdateMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -33,6 +33,8 @@ repositories {
 }
 
 dependencies {
+    implementation "org.openjfx:javafx-base:${javafx_version}:win"
+    implementation "org.openjfx:javafx-graphics:${javafx_version}:win"
     implementation "org.openjfx:javafx-web:${javafx_version}:win"
     implementation "org.openjfx:javafx-controls:${javafx_version}:win"
     implementation "org.openjfx:javafx-swing:${javafx_version}:win"

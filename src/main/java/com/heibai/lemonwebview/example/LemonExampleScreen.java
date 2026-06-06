@@ -3,15 +3,9 @@ package com.heibai.lemonwebview.example;
 import com.heibai.lemonwebview.LemonBrowser;
 import com.heibai.lemonwebview.LemonWebView;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.network.chat.Component;
 
 public class LemonExampleScreen extends Screen {
@@ -19,7 +13,7 @@ public class LemonExampleScreen extends Screen {
 
     private LemonBrowser browser;
 
-    protected LemonExampleScreen(Component component) {
+    public LemonExampleScreen(Component component) {
         super(component);
     }
 
@@ -75,15 +69,13 @@ public class LemonExampleScreen extends Screen {
         browser.captureFrame();
         
         RenderSystem.disableDepthTest();
-        RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
         RenderSystem.setShaderTexture(0, browser.getRenderer().getTextureID());
-        Tesselator t = Tesselator.getInstance();
-        BufferBuilder buffer = t.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        buffer.addVertex(BROWSER_DRAW_OFFSET, height - BROWSER_DRAW_OFFSET, 0).setUv(0.0f, 1.0f).setColor(255, 255, 255, 255);
-        buffer.addVertex(width - BROWSER_DRAW_OFFSET, height - BROWSER_DRAW_OFFSET, 0).setUv(1.0f, 1.0f).setColor(255, 255, 255, 255);
-        buffer.addVertex(width - BROWSER_DRAW_OFFSET, BROWSER_DRAW_OFFSET, 0).setUv(1.0f, 0.0f).setColor(255, 255, 255, 255);
-        buffer.addVertex(BROWSER_DRAW_OFFSET, BROWSER_DRAW_OFFSET, 0).setUv(0.0f, 0.0f).setColor(255, 255, 255, 255);
-        BufferUploader.drawWithShader(buffer.build());
+        
+        int renderWidth = width - BROWSER_DRAW_OFFSET * 2;
+        int renderHeight = height - BROWSER_DRAW_OFFSET * 2;
+        
+        guiGraphics.blit(BROWSER_DRAW_OFFSET, BROWSER_DRAW_OFFSET, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight);
+        
         RenderSystem.setShaderTexture(0, 0);
         RenderSystem.enableDepthTest();
     }
