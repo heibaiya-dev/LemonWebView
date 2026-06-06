@@ -40,13 +40,13 @@ dependencies {
 
 processResources {
     filesMatching('**/*.toml') {
-        expand 'mod_id': mod_id,
-                'mod_version': mod_version,
-                'mod_name': mod_name,
-                'neoforge_version': neoforge_version,
-                'loader_version': loader_version,
-                'neoforge_dependency': neoforge_dependency,
-                'minecraft_version': minecraft_version
+        expand 'mod_id': project.mod_id,
+                'mod_version': project.mod_version,
+                'mod_name': project.mod_name,
+                'neoforge_version': project.neoforge_version,
+                'loader_version': project.loader_version,
+                'neoforge_dependency': project.neoforge_dependency,
+                'minecraft_version': project.minecraft_version
     }
 }
 
