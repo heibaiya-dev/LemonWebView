@@ -3,6 +3,11 @@ package com.heibai.lemonwebview.screen;
 import com.heibai.lemonwebview.LemonBrowser;
 import com.heibai.lemonwebview.LemonWebView;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -87,13 +92,20 @@ public class WebViewScreen extends Screen {
             RenderSystem.disableDepthTest();
             RenderSystem.setShaderTexture(0, browser.getRenderer().getTextureID());
             
+            Tesselator tesselator = Tesselator.getInstance();
+            BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+            
             int renderX = MARGIN;
             int renderY = MARGIN;
             int renderWidth = width - MARGIN * 2;
             int renderHeight = height - MARGIN * 2 - BUTTON_HEIGHT - 5;
             
-            guiGraphics.blit(renderX, renderY, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight);
+            buffer.addVertex(renderX, renderY + renderHeight, 0).setUv(0.0f, 1.0f).setColor(255, 255, 255, 255);
+            buffer.addVertex(renderX + renderWidth, renderY + renderHeight, 0).setUv(1.0f, 1.0f).setColor(255, 255, 255, 255);
+            buffer.addVertex(renderX + renderWidth, renderY, 0).setUv(1.0f, 0.0f).setColor(255, 255, 255, 255);
+            buffer.addVertex(renderX, renderY, 0).setUv(0.0f, 0.0f).setColor(255, 255, 255, 255);
             
+            BufferUploader.drawWithShader(buffer.buildOrThrow());
             RenderSystem.setShaderTexture(0, 0);
             RenderSystem.enableDepthTest();
         }
