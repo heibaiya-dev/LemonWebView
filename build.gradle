@@ -1,7 +1,6 @@
 plugins {
     id 'net.neoforged.moddev' version '2.0.141'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 archivesBaseName = project.archives_base_name
@@ -33,42 +32,31 @@ repositories {
     mavenCentral()
 }
 
+// 创建自定义configuration用于打包JavaFX
+configurations {
+    javafxLibs
+}
+
 dependencies {
+    // 编译时需要implementation
     implementation "org.openjfx:javafx-base:${javafx_version}:win"
     implementation "org.openjfx:javafx-graphics:${javafx_version}:win"
     implementation "org.openjfx:javafx-web:${javafx_version}:win"
     implementation "org.openjfx:javafx-controls:${javafx_version}:win"
     implementation "org.openjfx:javafx-swing:${javafx_version}:win"
+    
+    // 打包时使用的configuration
+    javafxLibs "org.openjfx:javafx-base:${javafx_version}:win"
+    javafxLibs "org.openjfx:javafx-graphics:${javafx_version}:win"
+    javafxLibs "org.openjfx:javafx-web:${javafx_version}:win"
+    javafxLibs "org.openjfx:javafx-controls:${javafx_version}:win"
+    javafxLibs "org.openjfx:javafx-swing:${javafx_version}:win"
 }
 
-shadowJar {
-    archiveClassifier.set('')
-    
-    // 只包含JavaFX依赖
-    configurations = [project.configurations.runtimeClasspath]
-    
-    dependencies {
-        include(dependency("org.openjfx:javafx-base:.*:win"))
-        include(dependency("org.openjfx:javafx-graphics:.*:win"))
-        include(dependency("org.openjfx:javafx-web:.*:win"))
-        include(dependency("org.openjfx:javafx-controls:.*:win"))
-        include(dependency("org.openjfx:javafx-swing:.*:win"))
-    }
-    
-    // 排除所有其他依赖
-    exclude 'net/neoforged/**'
-    exclude 'net/minecraftforge/**'
-    exclude 'cpw/mods/**'
-    exclude 'org/slf4j/**'
-    exclude 'com/mojang/**'
-    exclude 'it/unimi/dsi/**'
-    exclude 'org/apache/**'
-    
-    // 排除META-INF中的服务文件（避免冲突）
-    exclude 'META-INF/services/**'
-    exclude 'META-INF/*.SF'
-    exclude 'META-INF/*.DSA'
-    exclude 'META-INF/*.RSA'
+// 在jar任务中合并JavaFX依赖
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from configurations.javafxLibs.collect { it.isDirectory() ? it : zipTree(it) }
     
     manifest {
         attributes([
@@ -82,8 +70,6 @@ shadowJar {
         ])
     }
 }
-
-tasks.build.dependsOn(shadowJar)
 
 processResources {
     var modId = project.mod_id
@@ -107,20 +93,6 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-jar {
-    manifest {
-        attributes([
-            'Specification-Title'     : mod_name,
-            'Specification-Vendor'    : mod_vendor,
-            'Specification-Version'   : "1",
-            'Implementation-Title'    : mod_name,
-            'Implementation-Version'  : mod_version,
-            'Implementation-Vendor'   : mod_vendor,
-            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
 }
 
 publishing {
