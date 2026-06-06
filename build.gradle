@@ -39,14 +39,22 @@ dependencies {
 }
 
 processResources {
+    var modId = project.mod_id
+    var modVersion = project.mod_version
+    var modName = project.mod_name
+    var neoForgeVersion = project.neoforge_version
+    var loaderVersion = project.loader_version
+    var neoForgeDependency = project.neoforge_dependency
+    var mcVersion = project.minecraft_version
+    
     filesMatching('**/*.toml') {
-        expand 'mod_id': project.mod_id,
-                'mod_version': project.mod_version,
-                'mod_name': project.mod_name,
-                'neoforge_version': project.neoforge_version,
-                'loader_version': project.loader_version,
-                'neoforge_dependency': project.neoforge_dependency,
-                'minecraft_version': project.minecraft_version
+        expand 'mod_id': modId,
+                'mod_version': modVersion,
+                'mod_name': modName,
+                'neoforge_version': neoForgeVersion,
+                'loader_version': loaderVersion,
+                'neoforge_dependency': neoForgeDependency,
+                'minecraft_version': mcVersion
     }
 }
 
