@@ -19,8 +19,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class LemonBrowser {
     private final LemonRenderer renderer;
-    private final WebView webView;
-    private final WebEngine webEngine;
+    private WebView webView;
+    private WebEngine webEngine;
     private LemonCursorChangeListener cursorChangeListener;
     private boolean browserControls = true;
     private int lastWidth = 0, lastHeight = 0;
@@ -114,19 +114,22 @@ public class LemonBrowser {
     }
 
     public void resize(int width, int height) {
-        width = scaleX(width);
-        height = scaleY(height);
+        int scaledWidth = scaleX(width);
+        int scaledHeight = scaleY(height);
 
-        if (width == lastWidth && height == lastHeight) return;
+        if (scaledWidth == lastWidth && scaledHeight == lastHeight) return;
         
-        lastWidth = width;
-        lastHeight = height;
+        lastWidth = scaledWidth;
+        lastHeight = scaledHeight;
 
+        final int finalWidth = scaledWidth;
+        final int finalHeight = scaledHeight;
+        
         Platform.runLater(() -> {
             if (webView != null) {
-                webView.setPrefSize(width, height);
-                webView.setMaxSize(width, height);
-                webView.setMinSize(width, height);
+                webView.setPrefSize(finalWidth, finalHeight);
+                webView.setMaxSize(finalWidth, finalHeight);
+                webView.setMinSize(finalWidth, finalHeight);
             }
         });
     }
