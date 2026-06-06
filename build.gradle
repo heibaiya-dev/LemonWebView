@@ -44,15 +44,31 @@ dependencies {
 shadowJar {
     archiveClassifier.set('')
     
+    // 只包含JavaFX依赖
+    configurations = [project.configurations.runtimeClasspath]
+    
     dependencies {
-        include(dependency("org.openjfx:javafx-base:${javafx_version}:win"))
-        include(dependency("org.openjfx:javafx-graphics:${javafx_version}:win"))
-        include(dependency("org.openjfx:javafx-web:${javafx_version}:win"))
-        include(dependency("org.openjfx:javafx-controls:${javafx_version}:win"))
-        include(dependency("org.openjfx:javafx-swing:${javafx_version}:win"))
+        include(dependency("org.openjfx:javafx-base:.*:win"))
+        include(dependency("org.openjfx:javafx-graphics:.*:win"))
+        include(dependency("org.openjfx:javafx-web:.*:win"))
+        include(dependency("org.openjfx:javafx-controls:.*:win"))
+        include(dependency("org.openjfx:javafx-swing:.*:win"))
     }
     
-    mergeServiceFiles()
+    // 排除所有其他依赖
+    exclude 'net/neoforged/**'
+    exclude 'net/minecraftforge/**'
+    exclude 'cpw/mods/**'
+    exclude 'org/slf4j/**'
+    exclude 'com/mojang/**'
+    exclude 'it/unimi/dsi/**'
+    exclude 'org/apache/**'
+    
+    // 排除META-INF中的服务文件（避免冲突）
+    exclude 'META-INF/services/**'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
     
     manifest {
         attributes([
