@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// LemonWebView - Minecraft WebView Mod using JavaFX
+// Author: heibai (黑白)
 @Mod(LemonWebViewMod.MODID)
 public class LemonWebViewMod {
     public static final String MODID = "lemonwebview";
